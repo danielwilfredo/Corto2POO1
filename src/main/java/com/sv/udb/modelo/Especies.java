@@ -10,33 +10,27 @@ package com.sv.udb.modelo;
  * @author DanielWilfredo
  */
 public class Especies {
-    
     private int codiEspe;
     private String nombEspe;
     private String descEspe;
     private int codiRefeEspe;
     private String nombRefeEspe;
-    
-    public Especies(){}
 
-    public Especies(int codiEspe, String nombEspe, String descEspe, String nombRefeEspe) {
-        this.codiEspe = codiEspe;
-        this.nombEspe = nombEspe;
-        this.descEspe = descEspe;
-        this.nombRefeEspe = nombRefeEspe;
+
+    @Override
+    public String toString() {
+        return this.nombEspe;
     }
 
-    public Especies(int codiEspe, String nombEspe, String descEspe, int codiRefeEspe) {
-        this.codiEspe = codiEspe;
+  public Especies(int codiEspe, int codiRefeEspe, String nombRefeEspe, String nombEspe, String descEspe)
+  {
+      this.codiEspe = codiEspe;
         this.nombEspe = nombEspe;
         this.descEspe = descEspe;
         this.codiRefeEspe = codiRefeEspe;
-    }
-    
-    
-     
-    
-    
+        this.nombRefeEspe = nombRefeEspe;
+  }
+  public Especies(){}
 
     public int getCodiEspe() {
         return codiEspe;
@@ -77,12 +71,7 @@ public class Especies {
     public void setNombRefeEspe(String nombRefeEspe) {
         this.nombRefeEspe = nombRefeEspe;
     }
-    
-     @Override
-    public String toString() {
-        return this.nombRefeEspe;
-    }
-    
+  
     
     
     

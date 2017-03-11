@@ -28,12 +28,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
     private void llenarComboBox()
     {
-        DefaultComboBoxModel<Especies> modeEqui = new DefaultComboBoxModel<>();
-        for(Especies temp : new CtrlEspecies().consTodo())
+        try
         {
-            modeEqui.addElement(temp);
+            DefaultComboBoxModel<Especies> model = new DefaultComboBoxModel<>();//            
+            for(Especies temp : new CtrlEspecies().consTodo())
+            {
+                model.addElement(temp);
+            }
+            this.cmbrefeser.setModel((DefaultComboBoxModel)model);
         }
-        this.cmbrefeser.setModel((ComboBoxModel)modeEqui);
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
         
     }
 
@@ -47,10 +54,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnguardar = new javax.swing.JButton();
+        btnmodificar = new javax.swing.JButton();
+        btnconsultar = new javax.swing.JButton();
+        btneliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtcodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -62,37 +69,55 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblespecies = new javax.swing.JTable();
         cmbrefeser = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Especies"));
 
-        jButton1.setText("Guardar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnguardar.setText("Guardar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnguardarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Modificar");
-
-        jButton3.setText("Consultar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnmodificar.setText("Modificar");
+        btnmodificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnmodificarActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Eliminar");
+        btnconsultar.setText("Consultar");
+        btnconsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnconsultarActionPerformed(evt);
+            }
+        });
+
+        btneliminar.setText("Eliminar");
+        btneliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneliminarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Codigo ser:");
 
+        txtcodigo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtcodigo.setEnabled(false);
+
         jLabel2.setText("Nombre ser:");
+
+        txtnombre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jLabel3.setText("Descripcion ser:");
 
         txtdesc.setColumns(20);
+        txtdesc.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtdesc.setRows(5);
         jScrollPane1.setViewportView(txtdesc);
 
@@ -106,7 +131,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Codigo Sere", "Pertenece a", "Nombre Sere", "Descripcion Sere"
+                "Codigo Sere", "Nombre ser", "Pertenece a", "Descripcion Sere"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -115,6 +140,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblespecies.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblespeciesMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tblespecies);
@@ -127,33 +157,48 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         cmbrefeser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("Si desea modificar un registro padre");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Seleccione Reino Padre en el cmb");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(cmbrefeser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtcodigo)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtnombre)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1))
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(cmbrefeser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtcodigo)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtnombre)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane1))
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnmodificar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnconsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,13 +208,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -186,7 +225,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbrefeser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 65, Short.MAX_VALUE))))
+                        .addGap(9, 9, 9)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnmodificar, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                        .addComponent(btnconsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnguardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -209,58 +259,218 @@ public class FrmPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-try {
-          DefaultTableModel model = (DefaultTableModel)this.tblespecies.getModel();
-          while(model.getRowCount()>0)
-          {
-              model.removeRow(0);
-          }
-          for(Especies temp : new CtrlEspecies().consTodo())
-          {
-            model.addRow(new Object[]{temp.getCodiEspe(), temp.getNombEspe(), temp.getNombRefeEspe(), temp.getDescEspe()});
-          }
-        } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, ex.getMessage());
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-             if(txtcodigo.getText().isEmpty())
-         {
-             throw new Exception("Seleccione un registro");
-         }
-         if (txtnombre.getText().isEmpty())
-         {
-              throw new Exception("Ingrese un Nombre");
-         }
-         if(txtdesc.getText().isEmpty())
-         {
-              throw new Exception("Ingrese una descripcion");
-         }   
-         Especies objeEspe = (Especies)this.cmbrefeser.getSelectedItem();
-         JOptionPane.showMessageDialog(this, "el valor es: " + objeEspe.getCodiRefeEspe());
+    private void btnconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsultarActionPerformed
+cargarTabla();
+    }//GEN-LAST:event_btnconsultarActionPerformed
+private void cargarTabla()
+{
+    try
+        {
+            DefaultTableModel model = (DefaultTableModel)this.tblespecies.getModel();
+            while(model.getRowCount()>0){model.removeRow(0);} //Limpiar modelo
+            
+            for(Especies temp : new CtrlEspecies().consTodo())
+            {
+                if(temp.getCodiEspe()!=0)
+                {
+                    model.addRow(new Object[]{temp.getCodiEspe(),  temp, temp.getNombRefeEspe() , temp.getDescEspe()});
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+}
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        try
+        {
+            if(txtnombre.getText().isEmpty())
+            {
+                 throw new Exception("Ingrese el nombre del ser vivo");
+            }
+            if(txtdesc.getText().isEmpty())
+            {
+                 throw new Exception("Ingrese una descripcion");
+            }
             Especies obje = new Especies();
-            obje.setCodiEspe(Integer.parseInt(this.txtcodigo.getText()));
+            Especies objeEspe  = (Especies)this.cmbrefeser.getSelectedItem();
+            obje.setDescEspe(this.txtdesc.getText());
+            obje.setNombEspe(this.txtnombre.getText());
+            obje.setCodiRefeEspe(objeEspe.getCodiEspe());
+            if(cmbrefeser.getSelectedIndex() == 0)
+            {
+                if(new CtrlEspecies().guar2(obje))
+                {
+                    JOptionPane.showMessageDialog(this, "Datos guardados");
+                    cargarTabla();
+                    llenarComboBox();
+                     txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    cmbrefeser.setSelectedIndex(0);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Error al guardar los datos");
+                     txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    cmbrefeser.setSelectedIndex(0);
+                }
+            }
+            else
+            {
+                if(new CtrlEspecies().guar(obje))
+                {
+                    JOptionPane.showMessageDialog(this, "Datos guardados");
+                    llenarComboBox();
+                    txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    cmbrefeser.setSelectedIndex(0);
+                    cargarTabla();
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Error al guardar los datos");
+                }
+            }
+            
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void tblespeciesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblespeciesMouseClicked
+        try {
+             int fila = this.tblespecies.getSelectedRow();
+        if(fila >= 1)
+        {
+            Especies obje = (Especies)this.tblespecies.getValueAt(fila, 1);
+            Especies espe = (Especies)new CtrlEspecies().consUno(obje.getCodiRefeEspe());
+            cmbrefeser.setEditable(true);
+            cmbrefeser.setSelectedItem(espe);
+            cmbrefeser.setEditable(false);
+            this.txtcodigo.setText(String.valueOf(obje.getCodiEspe()));
+            this.txtnombre.setText(obje.getNombEspe());
+            this.txtdesc.setText(String.valueOf(obje.getDescEspe()));
+        }
+        } catch (Exception e) {
+            System.err.println("Error:" +e.getMessage());
+        }
+                
+    }//GEN-LAST:event_tblespeciesMouseClicked
+
+    private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
+         int vali = JOptionPane.showConfirmDialog(this, "Decea eliminar este registro");
+        if(vali == 1 || vali == 2 || vali == -1)
+        {
+            
+        }
+        else
+        {
+            try
+            {
+                if(txtcodigo.getText().isEmpty())
+                {
+                    throw new Exception("Seleccione un registro a eliminar");
+                }
+                Especies obje = new Especies();
+                obje.setCodiEspe(Integer.parseInt(this.txtcodigo.getText()));
+                if(new CtrlEspecies().elim(obje))
+                {
+                    JOptionPane.showMessageDialog(this, "Datos Eliminados");
+                    txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    cmbrefeser.setSelectedIndex(0);
+                   cargarTabla();
+                   llenarComboBox();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "No se puede Eliminar una tabla dependiente");
+                }
+            }
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btneliminarActionPerformed
+
+    private void btnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodificarActionPerformed
+        try
+        {
+            if(txtnombre.getText().isEmpty())
+            {
+                 throw new Exception("Ingrese el nombre del ser vivo");
+            }
+            if(txtdesc.getText().isEmpty())
+            {
+                 throw new Exception("Ingrese una descripcion");
+            }
+            if(txtcodigo.getText().isEmpty())
+            {
+                throw new Exception("Seleccione un registro a modificar");
+            }
+            Especies obje = new Especies();
+            Especies objeEspe  = (Especies)this.cmbrefeser.getSelectedItem();
             obje.setNombEspe(this.txtnombre.getText());
             obje.setDescEspe(this.txtdesc.getText());
-            obje.setCodiRefeEspe(objeEspe.getCodiRefeEspe());
-            if(new CtrlEspecies().guar(obje))
-            {
-                JOptionPane.showMessageDialog(this, "Datos guardados");
-                this.txtnombre.setText("");
-                this.txtdesc.setText("");
-                this.txtcodigo.setText("1");
-                
-            }
-            else JOptionPane.showMessageDialog(this, "Error al guardar los datos");
+           obje.setCodiRefeEspe(objeEspe.getCodiEspe());
+            obje.setCodiEspe(Integer.parseInt(this.txtcodigo.getText()));
+   if(this.cmbrefeser.getSelectedIndex() == 0 )
+   {
+       if(new CtrlEspecies().modi2(obje))
+                {
+                    JOptionPane.showMessageDialog(this, "Datos modificados");
+                   txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    llenarComboBox();
+                    cargarTabla();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Error al modificar");
+                }
+   }
+   else
+   {
+       if(new CtrlEspecies().modi(obje))
+                {
+                    JOptionPane.showMessageDialog(this, "Datos modificados");
+                   txtcodigo.setText("");
+                    txtnombre.setText("");
+                    txtdesc.setText("");
+                    txtnombre.requestFocus();
+                    llenarComboBox();
+                    cargarTabla();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Error al modificar");
+                }
+   }
+             
+                     
             
-        } catch (Exception e) 
-        {
-            JOptionPane.showMessageDialog(this, e.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnmodificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -298,15 +508,17 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnconsultar;
+    private javax.swing.JButton btneliminar;
+    private javax.swing.JButton btnguardar;
+    private javax.swing.JButton btnmodificar;
     private javax.swing.JComboBox<String> cmbrefeser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
