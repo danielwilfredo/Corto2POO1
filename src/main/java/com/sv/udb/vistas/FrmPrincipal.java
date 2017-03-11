@@ -5,6 +5,13 @@
  */
 package com.sv.udb.vistas;
 
+import com.sv.udb.controlador.CtrlEspecies;
+import com.sv.udb.modelo.Especies;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author DanielWilfredo
@@ -16,6 +23,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        llenarComboBox();
+    }
+    private void llenarComboBox()
+    {
+        DefaultComboBoxModel<Especies> modeEqui = new DefaultComboBoxModel<>();
+        for(Especies temp : new CtrlEspecies().consTodo())
+        {
+            modeEqui.addElement(temp);
+        }
+        this.cmbrefeser.setModel((ComboBoxModel)modeEqui);
+        
     }
 
     /**
@@ -39,20 +58,30 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtdesc = new javax.swing.JTextArea();
-        cmbser = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblespecies = new javax.swing.JTable();
+        cmbrefeser = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Especies"));
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Modificar");
 
         jButton3.setText("Consultar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Eliminar");
 
@@ -66,11 +95,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txtdesc.setRows(5);
         jScrollPane1.setViewportView(txtdesc);
 
-        cmbser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel4.setText("Referencia ser:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblespecies.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -78,33 +105,44 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo Sere", "Pertenece a", "Nombre Sere", "Descripcion Sere"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblespecies);
+        if (tblespecies.getColumnModel().getColumnCount() > 0) {
+            tblespecies.getColumnModel().getColumn(0).setResizable(false);
+            tblespecies.getColumnModel().getColumn(1).setResizable(false);
+            tblespecies.getColumnModel().getColumn(2).setResizable(false);
+            tblespecies.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        cmbrefeser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(cmbser, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cmbrefeser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtcodigo)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtnombre)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1))
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,9 +183,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addGap(9, 9, 9)
-                        .addComponent(cmbser, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 66, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbrefeser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 65, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -169,6 +207,59 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+try {
+          DefaultTableModel model = (DefaultTableModel)this.tblespecies.getModel();
+          while(model.getRowCount()>0)
+          {
+              model.removeRow(0);
+          }
+          for(Especies temp : new CtrlEspecies().consTodo())
+          {
+            model.addRow(new Object[]{temp.getCodiEspe(), temp.getNombEspe(), temp.getNombRefeEspe(), temp.getDescEspe()});
+          }
+        } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, ex.getMessage());
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+             if(txtcodigo.getText().isEmpty())
+         {
+             throw new Exception("Seleccione un registro");
+         }
+         if (txtnombre.getText().isEmpty())
+         {
+              throw new Exception("Ingrese un Nombre");
+         }
+         if(txtdesc.getText().isEmpty())
+         {
+              throw new Exception("Ingrese una descripcion");
+         }   
+         Especies objeEspe = (Especies)this.cmbrefeser.getSelectedItem();
+         JOptionPane.showMessageDialog(this, "el valor es: " + objeEspe.getCodiRefeEspe());
+            Especies obje = new Especies();
+            obje.setCodiEspe(Integer.parseInt(this.txtcodigo.getText()));
+            obje.setNombEspe(this.txtnombre.getText());
+            obje.setDescEspe(this.txtdesc.getText());
+            obje.setCodiRefeEspe(objeEspe.getCodiRefeEspe());
+            if(new CtrlEspecies().guar(obje))
+            {
+                JOptionPane.showMessageDialog(this, "Datos guardados");
+                this.txtnombre.setText("");
+                this.txtdesc.setText("");
+                this.txtcodigo.setText("1");
+                
+            }
+            else JOptionPane.showMessageDialog(this, "Error al guardar los datos");
+            
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,7 +297,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cmbser;
+    private javax.swing.JComboBox<String> cmbrefeser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -218,7 +309,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblespecies;
     private javax.swing.JTextField txtcodigo;
     private javax.swing.JTextArea txtdesc;
     private javax.swing.JTextField txtnombre;

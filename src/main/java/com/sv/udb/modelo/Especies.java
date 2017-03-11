@@ -16,6 +16,24 @@ public class Especies {
     private String descEspe;
     private int codiRefeEspe;
     private String nombRefeEspe;
+    
+    public Especies(){}
+
+    public Especies(int codiEspe, String nombEspe, String descEspe, String nombRefeEspe) {
+        this.codiEspe = codiEspe;
+        this.nombEspe = nombEspe;
+        this.descEspe = descEspe;
+        this.nombRefeEspe = nombRefeEspe;
+    }
+
+    public Especies(int codiEspe, String nombEspe, String descEspe, int codiRefeEspe) {
+        this.codiEspe = codiEspe;
+        this.nombEspe = nombEspe;
+        this.descEspe = descEspe;
+        this.codiRefeEspe = codiRefeEspe;
+    }
+    
+    
      
     
     
@@ -60,6 +78,10 @@ public class Especies {
         this.nombRefeEspe = nombRefeEspe;
     }
     
+     @Override
+    public String toString() {
+        return this.nombRefeEspe;
+    }
     
     
     
