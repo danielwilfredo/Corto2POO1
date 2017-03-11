@@ -95,12 +95,74 @@ public class CtrlEspecies {
         return resp;
     }
      
-     /*para llenar el combo 
      
-     SELECT s1.codi_sere , s1.nomb_sere 'PERTENECE A', s2.nomb_sere, s2.desc_sere FROM seresvivos s1
-RIGHT JOIN seresvivos s2 on s1.codi_sere = s2.codi_refe_sere
-ORDER BY s1.codi_sere;*/
+     public boolean elim (Especies obje)
+    {
+        boolean resp = false;
+        Connection cn = new Conexion().getConn();
+        try {
+            String consu = "DELETE FROM seresvivos WHERE codi_sere = " + obje.getCodiEspe()+"";
+            PreparedStatement cmd = cn.prepareStatement(consu);
+            cmd.execute();
+        resp = true;          
+        } 
+        catch (Exception e) 
+        {
+            System.err.println("Error al Eliminar Jugador: " + e.getMessage());
+        }
+        finally
+        {
+            try {
+                if(cn!=null)
+                {
+                    if(!cn.isClosed())
+                    {
+                        cn.close();
+                    }
+                }
+                
+            } catch (SQLException err) 
+            {
+                err.printStackTrace();
+            }
+        }
+        return resp;
+    }
+     
+     public boolean modi(Especies obje)
+    {
+        boolean resp = false;
+        Connection cn = new Conexion().getConn();
+        try {
+            String consu = "update serevesvivos set nomb_refe="+obje.getNombEspe()+", desc_sere='"+ obje.getDescEspe()+"', codi_refe_sere='"+ obje.getCodiRefeEspe()+"' where codi_sere = "+ obje.getCodiEspe()+"";
+            PreparedStatement cmd = cn.prepareStatement(consu);
+           cmd.execute();
+        resp = true;          
+        } 
+        catch (Exception e) 
+        {
+            System.err.println("Error al actualizar equipos: " + e.getMessage());
+        }
+        finally
+        {
+            try {
+                if(cn!=null)
+                {
+                    if(!cn.isClosed())
+                    {
+                        cn.close();
+                    }
+                }
+                
+            } catch (SQLException err) 
+            {
+                err.printStackTrace();
+            }
+        }
+        return resp;
+    }
     
+     
     
     
 }
